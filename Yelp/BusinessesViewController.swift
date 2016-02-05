@@ -11,6 +11,7 @@ import UIKit
 class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
 
     var businesses: [Business]!
+    var category: String!
     
     @IBOutlet weak var businessTableView: UITableView!
     
@@ -27,17 +28,33 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         businessTableView.rowHeight = UITableViewAutomaticDimension
         businessTableView.estimatedRowHeight = 120
         
-        Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
+        businessTableView.tableFooterView = UIView(frame: CGRect.zero)
+        
+//        Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
+//            self.businesses = businesses
+//            
+//            self.searchResults = self.businesses
+//            self.businessTableView.reloadData()
+//            
+////            for business in self.searchResults {
+////                print(business.name!)
+////                print(business.address!)
+////            }
+//        })
+        
+        //Example of Yelp search with more search options specified
+        Business.searchWithTerm("\(category)", sort: .Distance, categories: [], deals: false) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             
             self.searchResults = self.businesses
             self.businessTableView.reloadData()
             
-//            for business in self.searchResults {
-//                print(business.name!)
-//                print(business.address!)
-//            }
-        })
+            for business in businesses {
+                print(business.id!)
+                print(business.name!)
+                print(business.address!)
+            }
+        }
         
         // create the search bar programatically since you won't be
         // able to drag one onto the navigation bar
@@ -51,21 +68,8 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         // view controller is added to a navigation controller's stack
         // you just need to set the titleView to be the search bar
         navigationItem.titleView = searchBar
-        navigationController?.navigationBar.barTintColor = UIColor.redColor()
+        navigationController?.navigationBar.barTintColor = UIColor(red: 218/255, green: 56/255, blue: 40/255, alpha: 1)
 //        navigationController.navigationBar.translucent = NO;
-
-        
-
-/* Example of Yelp search with more search options specified
-        Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
-            self.businesses = businesses
-            
-            for business in businesses {
-                print(business.name!)
-                print(business.address!)
-            }
-        }
-*/
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
@@ -101,7 +105,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         let cell = tableView.dequeueReusableCellWithIdentifier("BusinessCell", forIndexPath: indexPath) as! BusinessCell
         
         cell.business = searchResults[indexPath.row]
-    
+        cell.selectionStyle = UITableViewCellSelectionStyle.None
         return cell
     }
     

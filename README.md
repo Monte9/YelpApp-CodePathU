@@ -21,24 +21,29 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-- [ ] List anything else that you can get done to improve the app functionality!
+- [x] Added two tab bars; Search and Nearby
+- [x] Added a search view (landing view) that displays 4 categories eg Bars, Restaurants etc
+- [x] Nearby view coming soon - based on user's location
+- [x] Custom UI (dim red + white theme)
+
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1. 
-2. 
+1. How to do an OAuth to connect with the Yelp API from scratch
+2. Implementing location data (map view) in the app
+3. How to write completion blocks in swift
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
-![walkthrough](YelpM-first_gif.gif)
+![walkthrough](YelpM-2tabBars.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+Coming soon
 
 ## License
 

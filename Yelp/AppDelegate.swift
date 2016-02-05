@@ -15,7 +15,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        UIApplication.sharedApplication().statusBarStyle = .LightContent
+        
+        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        // Set up the search View Controller
+        let searchNavigationController = storyboard.instantiateViewControllerWithIdentifier("SearchNavigationController") as! UINavigationController
+        let searchViewController = searchNavigationController.topViewController as! SearchViewController
+        searchViewController.tabBarItem.title = "Search"
+        searchViewController.tabBarItem.image = UIImage(named: "search")
+        
+        
+        //Customize Popular navigation bar UI
+        searchNavigationController.navigationBar.barTintColor = UIColor(red: 218/255, green: 56/255, blue: 40/255, alpha: 1)
+        searchNavigationController.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        searchNavigationController.navigationBar.topItem?.title = "Search"
+        
+        
+        
+        
+        // Set up the search View Controller
+        let nearbyNavigationController = storyboard.instantiateViewControllerWithIdentifier("NearbyNavigationController") as! UINavigationController
+        let nearbyViewController = nearbyNavigationController.topViewController
+        nearbyViewController!.tabBarItem.title = "Nearby"
+        nearbyViewController!.tabBarItem.image = UIImage(named: "nearby")
+        
+        
+        //Customize Popular navigation bar UI
+        nearbyNavigationController.navigationBar.barTintColor = UIColor(red: 218/255, green: 56/255, blue: 40/255, alpha: 1)
+        nearbyNavigationController.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        nearbyNavigationController.navigationBar.topItem?.title = "Nearby"
+        
+        // Set up the Tab Bar Controller to have two tabs
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [searchNavigationController, nearbyNavigationController]
+        UITabBar.appearance().tintColor = UIColor(red: 218/255, green: 56/255, blue: 40/255, alpha: 1)
+    //    UITabBar.appearance().barTintColor = UIColor.blackColor()
+
+        
+        // Make the Tab Bar Controller the root view controller
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
+        
         return true
     }
 
