@@ -8,8 +8,8 @@
 
 import UIKit
 
-class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
-
+class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIScrollViewDelegate {
+    
     var businesses: [Business]!
     var category: String!
     
@@ -17,6 +17,12 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     
     var searchBar : UISearchBar!
     var searchResults : [Business]!
+    
+    
+    var isMoreDataLoading = false
+    var loadingMoreView:InfiniteScrollActivityView?
+    var offset: Int? = 20
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,20 +36,20 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         
         businessTableView.tableFooterView = UIView(frame: CGRect.zero)
         
-//        Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
-//            self.businesses = businesses
-//            
-//            self.searchResults = self.businesses
-//            self.businessTableView.reloadData()
-//            
-////            for business in self.searchResults {
-////                print(business.name!)
-////                print(business.address!)
-////            }
-//        })
+        //        Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
+        //            self.businesses = businesses
+        //
+        //            self.searchResults = self.businesses
+        //            self.businessTableView.reloadData()
+        //
+        ////            for business in self.searchResults {
+        ////                print(business.name!)
+        ////                print(business.address!)
+        ////            }
+        //        })
         
         //Example of Yelp search with more search options specified
-        Business.searchWithTerm("\(category)", sort: .Distance, categories: [], deals: false) { (businesses: [Business]!, error: NSError!) -> Void in
+        Business.searchWithTerm("\(category)", latitude: 37.721839, longitude: -122.476927, sort: .Distance, categories: [], deals: false, offset: nil, limit: 20) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             
             self.searchResults = self.businesses
@@ -69,7 +75,17 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         // you just need to set the titleView to be the search bar
         navigationItem.titleView = searchBar
         navigationController?.navigationBar.barTintColor = UIColor(red: 218/255, green: 56/255, blue: 40/255, alpha: 1)
-//        navigationController.navigationBar.translucent = NO;
+        //        navigationController.navigationBar.translucent = NO;
+        
+        // Set up Infinite Scroll loading indicator
+        let frame = CGRectMake(0, businessTableView.contentSize.height, businessTableView.bounds.size.width, InfiniteScrollActivityView.defaultHeight)
+        loadingMoreView = InfiniteScrollActivityView(frame: frame)
+        loadingMoreView!.hidden = true
+        businessTableView.addSubview(loadingMoreView!)
+        
+        var insets = businessTableView.contentInset;
+        insets.bottom += InfiniteScrollActivityView.defaultHeight;
+        businessTableView.contentInset = insets
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
@@ -95,7 +111,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         businessTableView.reloadData()
     }
     
-
+    
     //Implement TableView DataSource methods
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults?.count ?? 0
@@ -110,20 +126,103 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     
+    func loadMoreData() {
+        
+        //Example of Yelp search with more search options specified
+        Business.searchWithTerm("\(category)", latitude: 37.721839, longitude: -122.476927, sort: .Distance, categories: [], deals: false, offset: offset, limit:20) { (businesses: [Business]!, error: NSError!) -> Void in
+            
+            // Stop the loading indicator
+            self.loadingMoreView!.stopAnimating()
+            
+            if (businesses != []) {
+                for business in businesses {
+                    self.businesses.append(business)
+                }
+                self.searchResults = self.businesses
+                self.businessTableView.reloadData()
+                self.offset! = self.offset! + 20
+            }
+            
+            // Update flag
+            self.isMoreDataLoading = false
+        }
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if (!isMoreDataLoading) {
+            // Calculate the position of one screen length before the bottom of the results
+            let scrollViewContentHeight = businessTableView.contentSize.height
+            let scrollOffsetThreshold = scrollViewContentHeight - businessTableView.bounds.size.height
+            
+            // When the user has scrolled past the threshold, start requesting
+            if(scrollView.contentOffset.y > scrollOffsetThreshold && businessTableView.dragging) {
+                isMoreDataLoading = true
+                
+                // Update position of loadingMoreView, and start loading indicator
+                let frame = CGRectMake(0, businessTableView.contentSize.height, businessTableView.bounds.size.width, InfiniteScrollActivityView.defaultHeight)
+                loadingMoreView?.frame = frame
+                loadingMoreView!.startAnimating()
+                
+                // Code to load more results
+                loadMoreData()
+            }
+        }
+    }
+    
+    
+    
+    
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     /*
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // Get the new view controller using segue.destinationViewController.
+    // Pass the selected object to the new view controller.
     }
     */
+    
+}
 
+class InfiniteScrollActivityView: UIView {
+    var activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView()
+    static let defaultHeight:CGFloat = 60.0
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupActivityIndicator()
+    }
+    
+    override init(frame aRect: CGRect) {
+        super.init(frame: aRect)
+        setupActivityIndicator()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        activityIndicatorView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2)
+    }
+    
+    func setupActivityIndicator() {
+        activityIndicatorView.activityIndicatorViewStyle = .Gray
+        activityIndicatorView.hidesWhenStopped = true
+        self.addSubview(activityIndicatorView)
+    }
+    
+    func stopAnimating() {
+        self.activityIndicatorView.stopAnimating()
+        self.hidden = true
+    }
+    
+    func startAnimating() {
+        self.hidden = false
+        self.activityIndicatorView.startAnimating()
+    }
 }

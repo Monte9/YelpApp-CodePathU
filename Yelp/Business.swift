@@ -17,6 +17,10 @@ class Business: NSObject {
     let ratingImageURL: NSURL?
     let reviewCount: NSNumber?
     let id: String?
+    let offset: NSNumber?
+    let limit: NSNumber?
+    let latitude: NSNumber?
+    let longitude: NSNumber?
     
     init(dictionary: NSDictionary) {
         name = dictionary["name"] as? String
@@ -30,13 +34,20 @@ class Business: NSObject {
             imageURL = nil
         }
         
+        
         let location = dictionary["location"] as? NSDictionary
         var address = ""
+        var latitude : NSNumber?
+        var longitude : NSNumber?
         if location != nil {
             let addressArray = location!["address"] as? NSArray
             if addressArray != nil && addressArray!.count > 0 {
                 address = addressArray![0] as! String
             }
+            
+            let coordinates = location!["coordinate"] as? NSDictionary
+            latitude = coordinates!["latitude"] as? NSNumber
+            longitude = coordinates!["longitude"] as? NSNumber
             
             let neighborhoods = location!["neighborhoods"] as? NSArray
             if neighborhoods != nil && neighborhoods!.count > 0 {
@@ -46,7 +57,14 @@ class Business: NSObject {
                 address += neighborhoods![0] as! String
             }
         }
+        self.latitude = latitude
+        self.longitude = longitude
         self.address = address
+      
+     //   print(self.latitude)
+     //   print(self.longitude)
+        
+     //   print(location)
         
         let categoriesArray = dictionary["categories"] as? [[String]]
         if categoriesArray != nil {
@@ -76,6 +94,10 @@ class Business: NSObject {
         }
         
         reviewCount = dictionary["review_count"] as? NSNumber
+        
+        offset = dictionary["offset"] as? NSNumber
+        
+        limit = dictionary["limit"] as? NSNumber
     }
     
     class func businesses(array array: [NSDictionary]) -> [Business] {
@@ -91,7 +113,7 @@ class Business: NSObject {
         YelpClient.sharedInstance.searchWithTerm(term, completion: completion)
     }
     
-    class func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, completion: ([Business]!, NSError!) -> Void) -> Void {
-        YelpClient.sharedInstance.searchWithTerm(term, sort: sort, categories: categories, deals: deals, completion: completion)
+    class func searchWithTerm(term: String, latitude: NSNumber?, longitude: NSNumber?,  sort: YelpSortMode?, categories: [String]?, deals: Bool?, offset: Int?, limit: Int?, completion: ([Business]!, NSError!) -> Void) -> Void {
+        YelpClient.sharedInstance.searchWithTerm(term, latitude: latitude, longitude: longitude, sort: sort, categories: categories, deals: deals, offset: offset, limit: limit, completion: completion)
     }
 }

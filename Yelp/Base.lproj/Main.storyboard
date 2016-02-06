@@ -8,7 +8,7 @@
         <!--Search View Controller-->
         <scene sceneID="rPT-Sa-HrE">
             <objects>
-                <viewController id="YkY-du-jCd" customClass="SearchViewController" customModule="Yelp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="YkY-du-jCd" customClass="SearchViewController" customModule="YelpM" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Srr-mg-xGg"/>
                         <viewControllerLayoutGuide type="bottom" id="kgB-nX-gqk"/>
@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="CategoryCell" id="xjF-Gu-aMe" customClass="SearchCell" customModule="Yelp" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="CategoryCell" id="xjF-Gu-aMe" customClass="SearchCell" customModule="YelpM" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="92" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xjF-Gu-aMe" id="d9u-5L-iQS">
@@ -76,10 +76,10 @@
             </objects>
             <point key="canvasLocation" x="2137" y="338"/>
         </scene>
-        <!--View Controller-->
+        <!--Nearby View Controller-->
         <scene sceneID="9DB-Zr-DSg">
             <objects>
-                <viewController id="8u0-HZ-v8K" sceneMemberID="viewController">
+                <viewController id="8u0-HZ-v8K" customClass="NearbyViewController" customModule="YelpM" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ngb-V4-9YZ"/>
                         <viewControllerLayoutGuide type="bottom" id="SdY-8d-qR4"/>
@@ -88,20 +88,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coming soon" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jED-IS-C8V">
-                                <rect key="frame" x="81" y="262" width="158" height="43"/>
-                                <fontDescription key="fontDescription" name="IowanOldStyle-Italic" family="Iowan Old Style" pointSize="31"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="if0-Pd-Yhp">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                            </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="jED-IS-C8V" firstAttribute="centerX" secondItem="WDg-hH-1hJ" secondAttribute="centerX" id="NWq-wq-WKh"/>
-                            <constraint firstItem="jED-IS-C8V" firstAttribute="centerY" secondItem="WDg-hH-1hJ" secondAttribute="centerY" id="n0E-yp-8E7"/>
+                            <constraint firstItem="if0-Pd-Yhp" firstAttribute="leading" secondItem="WDg-hH-1hJ" secondAttribute="leading" id="00Y-Bo-bMR"/>
+                            <constraint firstItem="SdY-8d-qR4" firstAttribute="top" secondItem="if0-Pd-Yhp" secondAttribute="bottom" id="KJs-XW-hJd"/>
+                            <constraint firstAttribute="trailing" secondItem="if0-Pd-Yhp" secondAttribute="trailing" id="Vd4-xo-5hP"/>
+                            <constraint firstItem="if0-Pd-Yhp" firstAttribute="top" secondItem="ngb-V4-9YZ" secondAttribute="bottom" id="wxj-Bl-TOo"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="rFK-Bu-iD8"/>
+                    <connections>
+                        <outlet property="mapView" destination="if0-Pd-Yhp" id="4zJ-I6-N0Z"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yRW-9S-Yab" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -110,7 +112,7 @@
         <!--Yelp Thai Restaurants-->
         <scene sceneID="5L9-Uz-lNK">
             <objects>
-                <viewController id="2xI-yr-O5N" customClass="BusinessesViewController" customModule="Yelp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="2xI-yr-O5N" customClass="BusinessesViewController" customModule="YelpM" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="hR0-74-jRp"/>
                         <viewControllerLayoutGuide type="bottom" id="VBY-gq-v8E"/>
@@ -123,7 +125,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="BusinessCell" rowHeight="153" id="RW3-E6-O0R" customClass="BusinessCell" customModule="Yelp" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="BusinessCell" rowHeight="153" id="RW3-E6-O0R" customClass="BusinessCell" customModule="YelpM" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="92" width="320" height="153"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RW3-E6-O0R" id="XfS-f5-SO8">
