@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="S7b-Sk-o5v">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="S7b-Sk-o5v">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -28,16 +28,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hok-VY-loZ">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Hok-VY-loZ">
                                                     <rect key="frame" x="14" y="9" width="25" height="25"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="25" id="4W0-Lm-D0T"/>
+                                                        <constraint firstAttribute="width" constant="25" id="YhP-Xc-C4O"/>
+                                                    </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Category Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lBE-nJ-YI7">
-                                                    <rect key="frame" x="51" y="11" width="228" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lBE-nJ-YI7">
+                                                    <rect key="frame" x="51" y="11" width="228" height="20"/>
                                                     <fontDescription key="fontDescription" name="PingFangHK-Semibold" family="PingFang HK" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="lBE-nJ-YI7" firstAttribute="top" secondItem="d9u-5L-iQS" secondAttribute="top" constant="11" id="HEN-3R-mXq"/>
+                                                <constraint firstItem="Hok-VY-loZ" firstAttribute="top" secondItem="d9u-5L-iQS" secondAttribute="top" constant="9" id="IMr-MR-x4l"/>
+                                                <constraint firstAttribute="trailing" secondItem="lBE-nJ-YI7" secondAttribute="trailing" constant="8" id="VcX-vf-uwh"/>
+                                                <constraint firstItem="lBE-nJ-YI7" firstAttribute="leading" secondItem="Hok-VY-loZ" secondAttribute="trailing" constant="12" id="dC9-PW-mtd"/>
+                                                <constraint firstItem="Hok-VY-loZ" firstAttribute="leading" secondItem="d9u-5L-iQS" secondAttribute="leading" constant="14" id="vyy-KH-egn"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="categoryImageView" destination="Hok-VY-loZ" id="bd9-7W-ECN"/>
@@ -49,6 +60,12 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="S7b-Sk-o5v" firstAttribute="leading" secondItem="mdu-tJ-Q0l" secondAttribute="leading" id="9Iv-FR-Utf"/>
+                            <constraint firstItem="S7b-Sk-o5v" firstAttribute="top" secondItem="mdu-tJ-Q0l" secondAttribute="top" id="BmO-9T-jc3"/>
+                            <constraint firstItem="kgB-nX-gqk" firstAttribute="top" secondItem="S7b-Sk-o5v" secondAttribute="bottom" id="RmD-cy-gKV"/>
+                            <constraint firstAttribute="trailing" secondItem="S7b-Sk-o5v" secondAttribute="trailing" id="wzQ-O6-3Le"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="LKK-SZ-qTN"/>
                     <connections>
@@ -71,7 +88,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Coming soon" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jED-IS-C8V">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coming soon" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jED-IS-C8V">
                                 <rect key="frame" x="81" y="262" width="158" height="43"/>
                                 <fontDescription key="fontDescription" name="IowanOldStyle-Italic" family="Iowan Old Style" pointSize="31"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -79,6 +96,10 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="jED-IS-C8V" firstAttribute="centerX" secondItem="WDg-hH-1hJ" secondAttribute="centerX" id="NWq-wq-WKh"/>
+                            <constraint firstItem="jED-IS-C8V" firstAttribute="centerY" secondItem="WDg-hH-1hJ" secondAttribute="centerY" id="n0E-yp-8E7"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="rFK-Bu-iD8"/>
                 </viewController>

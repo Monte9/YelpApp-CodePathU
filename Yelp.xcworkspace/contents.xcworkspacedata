@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:Yelp.xcodeproj">
+      location = "group:/Users/macbook/Documents/Developer/CodePath Univ- iOS Course/Project2-YelpApp/YelpApp-CodePathU/YelpM.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
