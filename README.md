@@ -39,7 +39,7 @@ Please list two areas of the assignment you'd like to **discuss further with you
 Here's a walkthrough of implemented user stories:
 
 
-[![Watch it on Youtube](YoutubeImage.jpg)](https://youtu.be/1V5I60wnPI0)
+[![Watch it on Youtube](http://img.youtube.com/vi/1V5I60wnPI0/0.jpg)](https://youtu.be/1V5I60wnPI0)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
