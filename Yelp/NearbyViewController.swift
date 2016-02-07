@@ -51,13 +51,13 @@ class NearbyViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
             
             
 //            print(business)
-//            let centerLocation = CLLocation(latitude: (business.latitude as? Double!)!, longitude: (business.longitude as? Double!)!)
-//            goToLocation(centerLocation)
+           
             
             let pinLocation = CLLocationCoordinate2DMake((business.latitude as? Double!)!, (business.longitude as? Double!)!)
             addAnnotationAtCoordinate(pinLocation, title: business.name!)
             
-
+            let centerLocation = CLLocation(latitude: (business.latitude as? Double!)!, longitude: (business.longitude as? Double!)!)
+            goToLocation(centerLocation)
             
             // Hide HUD once network request comes back (must be done on main UI thread)
             MBProgressHUD.hideHUDForView(self.view, animated: true)
@@ -65,20 +65,24 @@ class NearbyViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         
         
         else {
+            
+            print("In here.. okAY!")
         //Example of Yelp search with more search options specified
         Business.searchWithTerm("restaurants", latitude: locationManager.location?.coordinate.latitude, longitude: locationManager.location?.coordinate.longitude, sort: .Distance, categories: [], deals: false, offset: nil, limit: 20) { (businesses: [Business]!, error: NSError!) -> Void in
-            self.businesses = businesses
-            
-            
-            if (businesses != nil) {
+          
+            print("Here too... \(error)")
+            if (error != nil) {
             //            self.searchResults = self.businesses
             //            self.businessTableView.reloadData()
             //
-            for business in businesses {
+            self.businesses = businesses
+            
+                for business in businesses {
                 let pinLocation = CLLocationCoordinate2DMake(business.latitude! as! Double!, business.longitude as! Double!)
                 self.addAnnotationAtCoordinate(pinLocation, title: business.name!)
                 }}
             else {
+                print("why not here?")
                 print("Businesses on Mars -  Error 404!")
             }
             // Hide HUD once network request comes back (must be done on main UI thread)
@@ -142,14 +146,30 @@ class NearbyViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
                 
                 let annotationsToRemove = self.mapView.annotations.filter { $0 !== self.mapView.userLocation }
                 self.mapView.removeAnnotations( annotationsToRemove )
-                
+                print("THIS???")
                 //            self.searchResults = self.businesses
                 //            self.businessTableView.reloadData()
                 //
-                for business in businesses {
-                    let pinLocation = CLLocationCoordinate2DMake(business.latitude! as! Double!, business.longitude as! Double!)
-                    self.addAnnotationAtCoordinate(pinLocation, title: business.name!)
+                if (businesses != nil) {
+                    //            self.searchResults = self.businesses
+                    //            self.businessTableView.reloadData()
+                    //
+                    self.businesses = businesses
+                    
+                    for business in businesses {
+                        let pinLocation = CLLocationCoordinate2DMake(business.latitude! as! Double!, business.longitude as! Double!)
+                        self.addAnnotationAtCoordinate(pinLocation, title: business.name!)
+                    }
                 }
+                else {
+                    
+                    let alertController = UIAlertController(title: "Location Alert!", message: "Civilization on Mars not established yet!", preferredStyle: UIAlertControllerStyle.Alert)
+                    alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                    
+                   
+                }
+                
                 // Hide HUD once network request comes back (must be done on main UI thread)
                 MBProgressHUD.hideHUDForView(self.view, animated: true)
             }

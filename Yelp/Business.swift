@@ -107,7 +107,8 @@ class Business: NSObject {
         YelpClient.sharedInstance.searchWithTerm(term, completion: completion)
     }
     
-    class func searchWithTerm(term: String, latitude: NSNumber?, longitude: NSNumber?,  sort: YelpSortMode?, categories: [String]?, deals: Bool?, offset: Int?, limit: Int?, completion: ([Business]!, NSError!) -> Void) -> Void {
+    class func searchWithTerm(term: String, latitude: NSNumber?, longitude: NSNumber?,  sort: YelpSortMode?, categories: [String]?, deals: Bool?, offset: Int?, limit: Int?, completion: ([Business]!, error: NSError!) -> Void) -> Void {
         YelpClient.sharedInstance.searchWithTerm(term, latitude: latitude, longitude: longitude, sort: sort, categories: categories, deals: deals, offset: offset, limit: limit, completion: completion)
+        print("this is where is error is coming from")
     }
 }

@@ -14,17 +14,18 @@ The following **required** functionality is completed:
 
 The following **optional** features are implemented:
 
-- [ ] Search results page
-- [ ] Infinite scroll for restaurant results.
-- [ ] Implement map view of restaurant results.
-- [ ] Implement the restaurant detail page.
+- [x] Search results page
+- [x] Infinite scroll for restaurant results.
+- [x] Implement map view of restaurant results.
+- [x] Implement the restaurant detail page.
 
 The following **additional** features are implemented:
 
 - [x] Added two tab bars; Search and Nearby
 - [x] Added a search view (landing view) that displays 4 categories eg Bars, Restaurants etc
-- [x] Nearby view coming soon - based on user's location
+- [x] Nearby view added - shows restaurants based on user's location
 - [x] Custom UI (dim red + white theme)
+- [x] Added new map feature; drop pin to see restaurants nearby
 
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
@@ -37,7 +38,8 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 Here's a walkthrough of implemented user stories:
 
-![walkthrough](YelpM-2tabBars.gif)
+
+[![Watch it on Youtube](YoutubeImage.jpg)](https://youtu.be/1V5I60wnPI0)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
