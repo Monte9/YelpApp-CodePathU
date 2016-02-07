@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIScrollViewDelegate {
     
@@ -47,19 +48,26 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         ////                print(business.address!)
         ////            }
         //        })
+        // Display HUD right before next request is made
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
         //Example of Yelp search with more search options specified
-        Business.searchWithTerm("\(category)", latitude: 37.721839, longitude: -122.476927, sort: .Distance, categories: [], deals: false, offset: nil, limit: 20) { (businesses: [Business]!, error: NSError!) -> Void in
+        Business.searchWithTerm("\(category)", latitude: 37.721839, longitude: -122.476927, sort: .BestMatched, categories: [], deals: false, offset: nil, limit: 20) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
-            
+            if (self.businesses != nil) {
             self.searchResults = self.businesses
             self.businessTableView.reloadData()
-            
-            for business in businesses {
-                print(business.id!)
-                print(business.name!)
-                print(business.address!)
+                // Hide HUD once network request comes back (must be done on main UI thread)
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
             }
+            else {
+                print("NO DATA RETURNED")
+            }
+//            for business in businesses {
+//                print(business.id!)
+//                print(business.name!)
+//                print(business.address!)
+//            }
         }
         
         // create the search bar programatically since you won't be
@@ -179,15 +187,21 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         // Dispose of any resources that can be recreated.
     }
     
-    /*
+    
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
+        
+        let businessViewController = segue.destinationViewController as! NearbyViewController
+        businessViewController.isMapView = true
+        
+        let cell = sender as! UITableViewCell
+        let indexPath = businessTableView.indexPathForCell(cell)
+        businessViewController.business = searchResults[indexPath!.row]
+        
     }
-    */
+    
     
 }
 

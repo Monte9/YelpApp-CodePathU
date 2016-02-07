@@ -34,7 +34,6 @@ class Business: NSObject {
             imageURL = nil
         }
         
-        
         let location = dictionary["location"] as? NSDictionary
         var address = ""
         var latitude : NSNumber?
@@ -60,11 +59,6 @@ class Business: NSObject {
         self.latitude = latitude
         self.longitude = longitude
         self.address = address
-      
-     //   print(self.latitude)
-     //   print(self.longitude)
-        
-     //   print(location)
         
         let categoriesArray = dictionary["categories"] as? [[String]]
         if categoriesArray != nil {

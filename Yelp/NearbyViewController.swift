@@ -15,7 +15,10 @@ class NearbyViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
     
     @IBOutlet weak var mapView: MKMapView!
     
+    var isMapView : Bool! = false
+    
     var businesses: [Business]!
+    var business : Business!
     var locationManager : CLLocationManager!
     var currentLocation : CLLocation!
     
@@ -28,7 +31,7 @@ class NearbyViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         locationManager.distanceFilter = 200
         locationManager.requestWhenInUseAuthorization()
-        mapView.delegate = self
+        
         
         // set the region to display, this also sets a correct zoom level
         // set starting center location in San Francisco
@@ -38,24 +41,51 @@ class NearbyViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         //   addAnnotationAtCoordinate(pinLocation)
         
         // goToLocation(centerLocation)
+        mapView.delegate = self
         
         MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
-        //        //Example of Yelp search with more search options specified
+        if (isMapView != false) {
+            // set the region to display, this also sets a correct zoom level
+            // set starting center location in San Francisco
+            
+            
+//            print(business)
+//            let centerLocation = CLLocation(latitude: (business.latitude as? Double!)!, longitude: (business.longitude as? Double!)!)
+//            goToLocation(centerLocation)
+            
+            let pinLocation = CLLocationCoordinate2DMake((business.latitude as? Double!)!, (business.longitude as? Double!)!)
+            addAnnotationAtCoordinate(pinLocation, title: business.name!)
+            
+
+            
+            // Hide HUD once network request comes back (must be done on main UI thread)
+            MBProgressHUD.hideHUDForView(self.view, animated: true)
+        }
+        
+        
+        else {
+        //Example of Yelp search with more search options specified
         Business.searchWithTerm("restaurants", latitude: locationManager.location?.coordinate.latitude, longitude: locationManager.location?.coordinate.longitude, sort: .Distance, categories: [], deals: false, offset: nil, limit: 20) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             
+            
+            if (businesses != nil) {
             //            self.searchResults = self.businesses
             //            self.businessTableView.reloadData()
             //
             for business in businesses {
                 let pinLocation = CLLocationCoordinate2DMake(business.latitude! as! Double!, business.longitude as! Double!)
                 self.addAnnotationAtCoordinate(pinLocation, title: business.name!)
+                }}
+            else {
+                print("Businesses on Mars -  Error 404!")
             }
             // Hide HUD once network request comes back (must be done on main UI thread)
             MBProgressHUD.hideHUDForView(self.view, animated: true)
         }
-        
+         
+        }
         
         //trying to drop a pin on user pressing
         var longPressGesture: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("handleGesture:"))
@@ -63,8 +93,30 @@ class NearbyViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         longPressGesture.minimumPressDuration = 0.5 //user must press for 0.5 seconds
       //  longPressGesture.numberOfTapsRequired = 2
         mapView.addGestureRecognizer(longPressGesture)
-        print("gesture added")
+      //  print("gesture added")
+        
+        
+        
+        
     }
+    
+   
+    
+//    public func selectAnnotation(annotation: MKAnnotation, animated: Bool) {
+//            
+//            let ann = annotation
+//                
+//                print("selected annotation: \(ann.title!)")
+//                
+//                let c = ann.coordinate
+//                print("coordinate: \(c.latitude), \(c.longitude)")
+//                
+//                //do something else with ann...
+//    }
+    
+//    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+//       print("what is this?")
+//    }
     
     func handleGesture(sender: UILongPressGestureRecognizer) {
         if sender.state == .Ended {
@@ -76,7 +128,31 @@ class NearbyViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
             
             pointAnn.coordinate = touchMapCoordinate
          //   pointAnn.title = "This is a new pin! yay!"
-            mapView.addAnnotation(pointAnn)
+          //  mapView.addAnnotation(pointAnn)
+            self.addAnnotationAtCoordinate(touchMapCoordinate, title: "Here")
+       //     print(touchMapCoordinate.latitude)
+            
+            MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            
+        //Example of Yelp search with more search options specified
+            Business.searchWithTerm("restaurants", latitude: touchMapCoordinate.latitude, longitude: touchMapCoordinate.longitude, sort: .Distance, categories: [], deals: false, offset: nil, limit: 20) { (businesses: [Business]!, error: NSError!) -> Void in
+                self.businesses = businesses
+                
+             //   mapView.removeAnnotation(mapView.annotations)
+                
+                let annotationsToRemove = self.mapView.annotations.filter { $0 !== self.mapView.userLocation }
+                self.mapView.removeAnnotations( annotationsToRemove )
+                
+                //            self.searchResults = self.businesses
+                //            self.businessTableView.reloadData()
+                //
+                for business in businesses {
+                    let pinLocation = CLLocationCoordinate2DMake(business.latitude! as! Double!, business.longitude as! Double!)
+                    self.addAnnotationAtCoordinate(pinLocation, title: business.name!)
+                }
+                // Hide HUD once network request comes back (must be done on main UI thread)
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+            }
         }
     }
     
@@ -96,29 +172,25 @@ class NearbyViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         }
     }
     
+   
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         let identifier = "customAnnotationView"
-        // custom pin annotation
-        var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier) as? MKPinAnnotationView
+        
+        // custom image annotation
+        var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier)
         if (annotationView == nil) {
-            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
         }
         else {
             annotationView!.annotation = annotation
         }
-        if #available(iOS 9.0, *) {
-            annotationView!.pinTintColor = UIColor.redColor()
-            annotationView!.animatesDrop = true
-        } else {
-            annotationView!.pinColor = MKPinAnnotationColor.Red
-            annotationView!.animatesDrop = true
-        }
-        
+        annotationView!.image = UIImage(named: "business")
+        annotationView!.canShowCallout = true
         return annotationView
     }
     
     public func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, didChangeDragState newState: MKAnnotationViewDragState, fromOldState oldState: MKAnnotationViewDragState) {
-        
+        mapView.reloadInputViews()
     }
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -138,7 +210,6 @@ class NearbyViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         //  print("annotation added")
     }
     
-    
     func goToLocation(location: CLLocation) {
         let span = MKCoordinateSpanMake(0.1, 0.1)
         let region = MKCoordinateRegionMake(location.coordinate, span)
@@ -149,7 +220,6 @@ class NearbyViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
     
     /*
     // MARK: - Navigation

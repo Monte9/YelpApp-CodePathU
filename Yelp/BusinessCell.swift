@@ -9,7 +9,6 @@
 import UIKit
 
 class BusinessCell: UITableViewCell {
-
     
     @IBOutlet weak var businessImageView: UIImageView!
     @IBOutlet weak var businessNameLabel: UILabel!
