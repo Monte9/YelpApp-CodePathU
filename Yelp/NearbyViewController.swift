@@ -25,13 +25,14 @@ class NearbyViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //        //use location manager to get the current location
+        //use location manager to get the current location
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         locationManager.distanceFilter = 200
         locationManager.requestWhenInUseAuthorization()
         
+        mapView.delegate = self
         
         // set the region to display, this also sets a correct zoom level
         // set starting center location in San Francisco
@@ -41,7 +42,7 @@ class NearbyViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         //   addAnnotationAtCoordinate(pinLocation)
         
         // goToLocation(centerLocation)
-        mapView.delegate = self
+        
         
         MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
@@ -77,6 +78,7 @@ class NearbyViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
             //
             self.businesses = businesses
             
+                if businesses != nil {
                 for business in businesses {
                 let pinLocation = CLLocationCoordinate2DMake(business.latitude! as! Double!, business.longitude as! Double!)
                 self.addAnnotationAtCoordinate(pinLocation, title: business.name!)
@@ -84,6 +86,7 @@ class NearbyViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
             else {
                 print("why not here?")
                 print("Businesses on Mars -  Error 404!")
+            }
             }
             // Hide HUD once network request comes back (must be done on main UI thread)
             MBProgressHUD.hideHUDForView(self.view, animated: true)
